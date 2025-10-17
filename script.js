@@ -1,33 +1,29 @@
-const sounds = ['applause', 'boo', 'gasp', 'tada', 'victory', 'wrong'];
+const soundNames = ['applause', 'boo', 'gasp', 'tada', 'victory', 'wrong'];
+const buttons = document.querySelectorAll('#buttons .btn:not(.stop)');
+const stopBtn = document.querySelector('.stop');
 
-const buttons = document.querySelectorAll('#buttons .btn');
-const stopBtn = document.querySelector('#buttons .stop');
-let audioElements = {};
-
-// Pre-load audio elements
-sounds.forEach(sound => {
-  const audio = new Audio(`sounds/${sound}.mp3`);
-  audioElements[sound] = audio;
-});
-
-// Play sound on button click
-buttons.forEach((button, idx) => {
-  if (!button.classList.contains('stop')) {
-    button.addEventListener('click', () => {
-      stopAll();
-      const sound = sounds[idx];
-      audioElements[sound].currentTime = 0;
-      audioElements[sound].play();
-    });
-  }
+// Play sound when a button is clicked
+buttons.forEach((btn, idx) => {
+  btn.addEventListener('click', () => {
+    stopAllSounds();
+    const soundName = soundNames[idx];
+    const audio = document.getElementById(soundName);
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play();
+    }
+  });
 });
 
 // Stop all sounds
-function stopAll() {
-  Object.values(audioElements).forEach(audio => {
-    audio.pause();
-    audio.currentTime = 0;
+function stopAllSounds() {
+  soundNames.forEach(name => {
+    const audio = document.getElementById(name);
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
   });
 }
 
-stopBtn.addEventListener('click', stopAll);
+stopBtn.addEventListener('click', stopAllSounds);
