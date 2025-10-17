@@ -1,5 +1,6 @@
 body {
-  background: #a678e7;
+  background: #a678e6;
+  font-family: 'Montserrat', sans-serif;
   margin: 0;
   min-height: 100vh;
   display: flex;
@@ -9,34 +10,27 @@ body {
 
 #buttons {
   display: flex;
-  gap: 40px;
   justify-content: center;
   align-items: center;
-  width: 100vw;
-  min-height: 100vh;
+  gap: 2rem;
 }
 
 .btn {
-  background: #6d419c;
+  background: #633c91;
   color: #fff;
-  font-family: 'Montserrat', Arial, sans-serif;
-  font-size: 2rem;
   border: none;
-  outline: none;
   border-radius: 10px;
-  padding: 40px 45px;
+  font-size: 2rem;
+  padding: 2rem 3rem;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.2s;
 }
 
-.btn:hover {
-  background: #8f5fc7;
+.btn:hover,
+.stop:hover {
+  background: #7f56d9;
 }
 
 .stop {
-  background: #c95490;
-}
-
-.stop:hover {
-  background: #e376b3;
+  background: #8a64d6;
 }

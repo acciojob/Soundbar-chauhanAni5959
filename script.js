@@ -1,28 +1,33 @@
 const sounds = ['applause', 'boo', 'gasp', 'tada', 'victory', 'wrong'];
-let currentAudio = null;
 
-function removeAudio() {
-  const aud = document.querySelector("audio");
-  if (aud) {
-    aud.pause();
-    aud.currentTime = 0;
-    aud.remove();
+const buttons = document.querySelectorAll('#buttons .btn');
+const stopBtn = document.querySelector('#buttons .stop');
+let audioElements = {};
+
+// Pre-load audio elements
+sounds.forEach(sound => {
+  const audio = new Audio(`sounds/${sound}.mp3`);
+  audioElements[sound] = audio;
+});
+
+// Play sound on button click
+buttons.forEach((button, idx) => {
+  if (!button.classList.contains('stop')) {
+    button.addEventListener('click', () => {
+      stopAll();
+      const sound = sounds[idx];
+      audioElements[sound].currentTime = 0;
+      audioElements[sound].play();
+    });
   }
+});
+
+// Stop all sounds
+function stopAll() {
+  Object.values(audioElements).forEach(audio => {
+    audio.pause();
+    audio.currentTime = 0;
+  });
 }
 
-document.querySelectorAll('.btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const soundName = btn.textContent.trim();
-    if (soundName === 'stop') {
-      removeAudio();
-      return;
-    }
-    removeAudio();
-    const audio = document.createElement("audio");
-    audio.src = `sounds/${soundName}.mp3`;
-    audio.autoplay = true;
-    audio.setAttribute("controls", "");
-    document.body.appendChild(audio);
-    currentAudio = audio;
-  });
-});
+stopBtn.addEventListener('click', stopAll);
