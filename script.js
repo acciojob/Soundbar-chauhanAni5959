@@ -1,26 +1,28 @@
 const sounds = ['applause', 'boo', 'gasp', 'tada', 'victory', 'wrong'];
 let currentAudio = null;
 
-// Add event listeners to each button
+function removeAudio() {
+  const aud = document.querySelector("audio");
+  if (aud) {
+    aud.pause();
+    aud.currentTime = 0;
+    aud.remove();
+  }
+}
+
 document.querySelectorAll('.btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const soundName = btn.textContent.trim();
     if (soundName === 'stop') {
-      if (currentAudio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-      }
+      removeAudio();
       return;
     }
-    playSound(soundName);
+    removeAudio();
+    const audio = document.createElement("audio");
+    audio.src = `sounds/${soundName}.mp3`;
+    audio.autoplay = true;
+    audio.setAttribute("controls", "");
+    document.body.appendChild(audio);
+    currentAudio = audio;
   });
 });
-
-function playSound(name) {
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio.currentTime = 0;
-  }
-  currentAudio = new Audio(`sounds/${name}.mp3`);
-  currentAudio.play();
-}
