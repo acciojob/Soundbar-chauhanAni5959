@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Soundbar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
       background: #a076e8;
@@ -28,12 +29,23 @@
       cursor: pointer;
       transition: background 0.2s, box-shadow 0.2s;
       box-shadow: 0 4px 22px rgba(48, 31, 104, 0.15);
+      outline: none;
+      position: relative;
+      z-index: 1;
     }
     .btn.stop {
       background: #502f5b;
     }
     .btn:active {
       background: #865fc7;
+    }
+    /* Make sure buttons are visible and not covered */
+    #buttons, .btn {
+      visibility: visible;
+      opacity: 1;
+    }
+    audio {
+      display: none;
     }
   </style>
 </head>
@@ -47,33 +59,35 @@
     <button class="btn">wrong</button>
     <button class="btn stop">stop</button>
   </div>
+
+  <!-- Hidden audio elements for Cypress test compatibility -->
+  <audio id="applause" src="sounds/applause.mp3"></audio>
+  <audio id="boo" src="sounds/boo.mp3"></audio>
+  <audio id="gasp" src="sounds/gasp.mp3"></audio>
+  <audio id="tada" src="sounds/tada.mp3"></audio>
+  <audio id="victory" src="sounds/victory.mp3"></audio>
+  <audio id="wrong" src="sounds/wrong.mp3"></audio>
+
   <script>
     const sounds = ['applause', 'boo', 'gasp', 'tada', 'victory', 'wrong'];
-    const audioElements = {};
 
-    sounds.forEach(sound => {
-      audioElements[sound] = new Audio(`sounds/${sound}.mp3`);
-    });
+    function stopAllSounds() {
+      sounds.forEach(sound => {
+        const audioElem = document.getElementById(sound);
+        audioElem.pause();
+        audioElem.currentTime = 0;
+      });
+    }
 
-    document.querySelectorAll('#buttons .btn').forEach(btn => {
-      const text = btn.textContent.trim();
+    document.querySelectorAll('.btn').forEach(btn => {
+      const sound = btn.textContent.trim();
       if (btn.classList.contains('stop')) {
-        btn.addEventListener('click', () => {
-          // Stop all sounds
-          Object.values(audioElements).forEach(audio => {
-            audio.pause();
-            audio.currentTime = 0;
-          });
-        });
+        btn.addEventListener('click', stopAllSounds);
       } else {
         btn.addEventListener('click', () => {
-          // Stop all other sounds
-          Object.values(audioElements).forEach(audio => {
-            audio.pause();
-            audio.currentTime = 0;
-          });
-          // Play the corresponding sound
-          audioElements[text].play();
+          stopAllSounds();
+          const audioElem = document.getElementById(sound);
+          audioElem.play();
         });
       }
     });
