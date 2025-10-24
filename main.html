@@ -3,11 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <title>Soundbar</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background: #a076e8;
+      font-family: 'Montserrat', Arial, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #buttons {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+    }
+    .btn {
+      background: #6d3790;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 2rem;
+      padding: 36px 60px;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 22px rgba(48, 31, 104, 0.15);
+    }
+    .btn.stop {
+      background: #502f5b;
+    }
+    .btn:active {
+      background: #865fc7;
+    }
+  </style>
 </head>
 <body>
-  <section id="buttons">
+  <div id="buttons">
     <button class="btn">applause</button>
     <button class="btn">boo</button>
     <button class="btn">gasp</button>
@@ -15,14 +46,37 @@
     <button class="btn">victory</button>
     <button class="btn">wrong</button>
     <button class="btn stop">stop</button>
-  </section>
-  <!-- Audio tags are always present in DOM and accessible -->
-  <audio id="applause" src="sounds/applause.mp3"></audio>
-  <audio id="boo" src="sounds/boo.mp3"></audio>
-  <audio id="gasp" src="sounds/gasp.mp3"></audio>
-  <audio id="tada" src="sounds/tada.mp3"></audio>
-  <audio id="victory" src="sounds/victory.mp3"></audio>
-  <audio id="wrong" src="sounds/wrong.mp3"></audio>
-  <script src="script.js"></script>
+  </div>
+  <script>
+    const sounds = ['applause', 'boo', 'gasp', 'tada', 'victory', 'wrong'];
+    const audioElements = {};
+
+    sounds.forEach(sound => {
+      audioElements[sound] = new Audio(`sounds/${sound}.mp3`);
+    });
+
+    document.querySelectorAll('#buttons .btn').forEach(btn => {
+      const text = btn.textContent.trim();
+      if (btn.classList.contains('stop')) {
+        btn.addEventListener('click', () => {
+          // Stop all sounds
+          Object.values(audioElements).forEach(audio => {
+            audio.pause();
+            audio.currentTime = 0;
+          });
+        });
+      } else {
+        btn.addEventListener('click', () => {
+          // Stop all other sounds
+          Object.values(audioElements).forEach(audio => {
+            audio.pause();
+            audio.currentTime = 0;
+          });
+          // Play the corresponding sound
+          audioElements[text].play();
+        });
+      }
+    });
+  </script>
 </body>
 </html>
