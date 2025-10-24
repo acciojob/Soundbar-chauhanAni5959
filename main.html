@@ -17,7 +17,12 @@
     #buttons {
       display: flex;
       justify-content: center;
+      align-items: center;
       gap: 60px;
+      width: 100vw;
+      z-index: 10;
+      position: relative;
+      background: transparent;
     }
     .btn {
       background: #6d3790;
@@ -32,17 +37,14 @@
       outline: none;
       position: relative;
       z-index: 1;
+      visibility: visible;
+      opacity: 1;
     }
     .btn.stop {
       background: #502f5b;
     }
     .btn:active {
       background: #865fc7;
-    }
-    /* Make sure buttons are visible and not covered */
-    #buttons, .btn {
-      visibility: visible;
-      opacity: 1;
     }
     audio {
       display: none;
@@ -59,7 +61,6 @@
     <button class="btn">wrong</button>
     <button class="btn stop">stop</button>
   </div>
-
   <!-- Hidden audio elements for Cypress test compatibility -->
   <audio id="applause" src="sounds/applause.mp3"></audio>
   <audio id="boo" src="sounds/boo.mp3"></audio>
@@ -67,18 +68,17 @@
   <audio id="tada" src="sounds/tada.mp3"></audio>
   <audio id="victory" src="sounds/victory.mp3"></audio>
   <audio id="wrong" src="sounds/wrong.mp3"></audio>
-
   <script>
     const sounds = ['applause', 'boo', 'gasp', 'tada', 'victory', 'wrong'];
-
+    // Helper: stop all sounds
     function stopAllSounds() {
       sounds.forEach(sound => {
         const audioElem = document.getElementById(sound);
+        // Pause and reset
         audioElem.pause();
         audioElem.currentTime = 0;
       });
     }
-
     document.querySelectorAll('.btn').forEach(btn => {
       const sound = btn.textContent.trim();
       if (btn.classList.contains('stop')) {
