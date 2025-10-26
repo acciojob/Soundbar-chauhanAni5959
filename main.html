@@ -12,22 +12,29 @@
     }
     body {
       background: #a379d8;
-      min-height: 100vh;
-      min-width: 100vw;
       margin: 0;
+      min-height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    #container {
+      width: 100vw;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: auto;
     }
     #buttons {
       display: flex;
+      flex-direction: row;
       justify-content: center;
       align-items: center;
       gap: 40px;
-      width: 100vw;
-      padding: 40px 0;
-      box-sizing: border-box;
+      width: auto;
+      margin: 0 auto;
     }
     .btn {
       background: #623e98;
@@ -40,8 +47,9 @@
       cursor: pointer;
       transition: background 0.2s;
       outline: none;
-      position: relative;
       z-index: 1;
+      position: relative;
+      display: inline-block;
     }
     .btn:hover:not(.stop) {
       background: #7e53b7;
@@ -52,28 +60,32 @@
     .stop:hover {
       background: #7447a1;
     }
-    /* Hide the audio visually but keep it accessible for Cypress */
+    /* Audio hidden visually but in the DOM for Cypress */
     audio {
-      width: 0;
-      height: 0;
+      display: block;
       opacity: 0;
       position: absolute;
-      left: -9999px;
+      pointer-events: none;
+      height: 1px;
+      width: 1px;
+      top: -10px;
+      left: -10px;
     }
   </style>
 </head>
 <body>
-  <div id="buttons">
-    <button class="btn">applause</button>
-    <button class="btn">boo</button>
-    <button class="btn">gasp</button>
-    <button class="btn">tada</button>
-    <button class="btn">victory</button>
-    <button class="btn">wrong</button>
-    <button class="btn stop">stop</button>
+  <div id="container">
+    <div id="buttons">
+      <button class="btn">applause</button>
+      <button class="btn">boo</button>
+      <button class="btn">gasp</button>
+      <button class="btn">tada</button>
+      <button class="btn">victory</button>
+      <button class="btn">wrong</button>
+      <button class="btn stop">stop</button>
+    </div>
   </div>
 
-  <!-- Audio elements for Cypress and playback -->
   <audio id="applause" src="sounds/applause.mp3"></audio>
   <audio id="boo" src="sounds/boo.mp3"></audio>
   <audio id="gasp" src="sounds/gasp.mp3"></audio>
